@@ -1,1 +1,3 @@
-# mimic
+# cooked.exe
+
+doomscrolling + cs = unemployment
