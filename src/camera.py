@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import threading
 from platform import system
-from time import perf_counter, sleep, time
+from time import perf_counter, sleep, strftime, time
 from typing import Any, Generator
 
 from .attention_engine import AttentionEngine
@@ -30,6 +30,8 @@ class CameraService:
         self._thread: threading.Thread | None = None
         self._latest_frame = None
         self._latest_payload = self._default_payload("starting")
+        self._last_log_at = 0.0
+        self._last_logged_state = ""
         self._tracker = MediaPipeTracker()
         self._extractor = FeatureExtractor()
         self._attention_engine = AttentionEngine()
@@ -173,6 +175,8 @@ class CameraService:
             self._latest_frame = display_frame.copy()
             self._latest_payload = payload
 
+        self._log_payload(payload)
+
     def _build_payload(
         self,
         attention,
@@ -208,6 +212,8 @@ class CameraService:
             self._latest_frame = placeholder
             self._latest_payload = payload
 
+        self._log_payload(payload)
+
     def _placeholder_frame(self, message: str):
         if cv2 is None or np is None:
             return None
@@ -238,6 +244,30 @@ class CameraService:
 
     def _current_frame(self) -> bytes | None:
         return self.current_jpeg()
+
+    def _log_payload(self, payload: dict[str, Any]) -> None:
+        now = perf_counter()
+        state = (
+            "DISTRACTED"
+            if payload["intervention_active"] or payload["state"] in {"distracted", "intervening"}
+            else "FOCUSED"
+        )
+        should_log = state != self._last_logged_state or (now - self._last_log_at) >= 0.75
+        if not should_log:
+            return
+
+        self._last_log_at = now
+        self._last_logged_state = state
+        face_detected = "TRUE" if payload["face_detected"] else "FALSE"
+        print(
+            f"[{strftime('%H:%M:%S')}] "
+            f"STATUS={state} | "
+            f"SCORE={payload['attention_score']} | "
+            f"YAW={payload['head_yaw']:.1f} | "
+            f"PITCH={payload['head_pitch']:.1f} | "
+            f"FACE={face_detected}",
+            flush=True,
+        )
 
     def _default_payload(self, state: str) -> dict[str, Any]:
         return {

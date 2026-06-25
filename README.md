@@ -120,8 +120,16 @@ attention_threshold           Score below which distraction begins
 recovery_threshold            Score required to recover from intervention
 intervention_delay_seconds    Delay before intervention, currently 0.0
 head_yaw_threshold            Side-to-side head angle threshold
+head_yaw_severe_threshold     Yaw angle where looking-away evidence maxes out
 head_pitch_threshold          Downward head angle threshold
+head_pitch_severe_threshold   Pitch angle where looking-down evidence maxes out
 mouth_open_threshold          Mouth openness threshold
+evidence_rise_alpha           How quickly distraction evidence builds
+evidence_fall_alpha           How quickly distraction evidence clears
+single_signal_penalty_cap     Max score penalty from one moderate cue alone
+high_confidence_single_signal_evidence Evidence needed for one cue to trigger alone
+high_confidence_single_signal_bonus Extra penalty for sustained high-confidence cue
+combined_distraction_penalty  Extra penalty when multiple posture cues agree
 sound_enabled                 Enables local alert sound
 mirror_preview                Mirrors the camera preview
 ```
