@@ -53,6 +53,10 @@ class CameraService:
         with self._lock:
             return dict(self._latest_payload)
 
+    def current_jpeg(self) -> bytes | None:
+        with self._lock:
+            return self._latest_jpeg
+
     def dismiss_intervention(self) -> dict[str, Any]:
         self._intervention_engine.clear()
         snapshot = self._state_machine.dismiss()
@@ -223,8 +227,7 @@ class CameraService:
         return encoded.tobytes()
 
     def _current_frame(self) -> bytes | None:
-        with self._lock:
-            return self._latest_jpeg
+        return self.current_jpeg()
 
     def _default_payload(self, state: str) -> dict[str, Any]:
         return {
