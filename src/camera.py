@@ -27,7 +27,7 @@ class CameraService:
         self._lock = threading.RLock()
         self._stop_event = threading.Event()
         self._thread: threading.Thread | None = None
-        self._latest_jpeg: bytes | None = None
+        self._latest_frame = None
         self._latest_payload = self._default_payload("starting")
         self._tracker = MediaPipeTracker()
         self._extractor = FeatureExtractor()
@@ -53,9 +53,25 @@ class CameraService:
         with self._lock:
             return dict(self._latest_payload)
 
-    def current_jpeg(self) -> bytes | None:
+    def current_frame(self):
         with self._lock:
-            return self._latest_jpeg
+            if self._latest_frame is None:
+                return None
+            return self._latest_frame.copy()
+
+    def current_jpeg(self) -> bytes | None:
+        frame = self.current_frame()
+        if frame is None or cv2 is None:
+            return None
+
+        ok, encoded = cv2.imencode(
+            ".jpg",
+            frame,
+            [int(cv2.IMWRITE_JPEG_QUALITY), settings.jpeg_quality],
+        )
+        if not ok:
+            return None
+        return encoded.tobytes()
 
     def dismiss_intervention(self) -> dict[str, Any]:
         self._intervention_engine.clear()
@@ -99,6 +115,7 @@ class CameraService:
         while not self._stop_event.is_set():
             camera = cv2.VideoCapture(settings.camera_index)
             camera.set(cv2.CAP_PROP_FPS, settings.fps)
+            camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
             if not camera.isOpened():
                 self._set_unavailable("Unable to open webcam")
@@ -140,14 +157,6 @@ class CameraService:
 
         intervention = self._intervention_engine.active()
         display_frame = cv2.flip(frame, 1) if settings.mirror_preview else frame
-        ok, encoded = cv2.imencode(
-            ".jpg",
-            display_frame,
-            [int(cv2.IMWRITE_JPEG_QUALITY), settings.jpeg_quality],
-        )
-        if not ok:
-            return
-
         payload = self._build_payload(
             attention=attention,
             state=state,
@@ -157,7 +166,7 @@ class CameraService:
         )
 
         with self._lock:
-            self._latest_jpeg = encoded.tobytes()
+            self._latest_frame = display_frame.copy()
             self._latest_payload = payload
 
     def _build_payload(
@@ -192,10 +201,10 @@ class CameraService:
         payload["camera_error"] = message
 
         with self._lock:
-            self._latest_jpeg = placeholder
+            self._latest_frame = placeholder
             self._latest_payload = payload
 
-    def _placeholder_frame(self, message: str) -> bytes | None:
+    def _placeholder_frame(self, message: str):
         if cv2 is None or np is None:
             return None
 
@@ -221,10 +230,7 @@ class CameraService:
             2,
             cv2.LINE_AA,
         )
-        ok, encoded = cv2.imencode(".jpg", image)
-        if not ok:
-            return None
-        return encoded.tobytes()
+        return image
 
     def _current_frame(self) -> bytes | None:
         return self.current_jpeg()
