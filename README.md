@@ -111,6 +111,8 @@ Common settings:
 
 ```text
 camera_index                  Webcam device index
+camera_width                  Requested webcam capture width
+camera_height                 Requested webcam capture height
 fps                           Camera processing rate
 jpeg_quality                  Preview encoding quality
 ema_alpha                     Attention-score smoothing factor

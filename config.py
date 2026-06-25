@@ -8,6 +8,8 @@ from typing import Any
 @dataclass
 class Settings:
     camera_index: int = 0
+    camera_width: int = 1280
+    camera_height: int = 720
     fps: int = 20
     jpeg_quality: int = 82
     ema_alpha: float = 0.3

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import threading
+from platform import system
 from time import perf_counter, sleep, time
 from typing import Any, Generator
 
@@ -113,7 +114,10 @@ class CameraService:
             return
 
         while not self._stop_event.is_set():
-            camera = cv2.VideoCapture(settings.camera_index)
+            backend = cv2.CAP_AVFOUNDATION if system() == "Darwin" else cv2.CAP_ANY
+            camera = cv2.VideoCapture(settings.camera_index, backend)
+            camera.set(cv2.CAP_PROP_FRAME_WIDTH, settings.camera_width)
+            camera.set(cv2.CAP_PROP_FRAME_HEIGHT, settings.camera_height)
             camera.set(cv2.CAP_PROP_FPS, settings.fps)
             camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 

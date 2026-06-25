@@ -72,6 +72,8 @@ class CookedWindow:
             self._draw_placeholder(width, height)
             return
 
+        self._canvas.delete("placeholder")
+
         frame_height, frame_width = frame.shape[:2]
         scale = max(width / frame_width, height / frame_height)
         resized_width = max(1, int(frame_width * scale))
@@ -98,18 +100,19 @@ class CookedWindow:
             self._canvas.itemconfigure(self._video_item, image=self._video_image)
 
     def _draw_placeholder(self, width: int, height: int) -> None:
+        self._canvas.delete("placeholder")
         self._canvas.delete("video")
         self._video_item = None
-        self._canvas.create_rectangle(0, 0, width, height, fill="#111114", outline="", tags="video")
+        self._canvas.create_rectangle(0, 0, width, height, fill="#111114", outline="", tags="placeholder")
         self._canvas.create_text(
             width // 2,
             height // 2,
             text="Starting camera...",
             fill="#f4f4f0",
             font=("Arial", 26, "bold"),
-            tags="video",
+            tags="placeholder",
         )
-        self._canvas.tag_lower("video")
+        self._canvas.tag_lower("placeholder")
 
     def _sync_intervention(self, distracted: bool, width: int, height: int) -> None:
         panel_geometry = self._panel_geometry(width, height)
