@@ -20,7 +20,7 @@ Everything runs locally on your machine. There is no cloud service, database, br
 
 ## Features
 
-- Native Desktop App: Opens its own desktop window with `python app.py`
+- Native Desktop App: Opens its own desktop window with `python3 app.py`
 - Live Webcam Feed: Uses the entire main window as the camera preview
 - Attention Metrics Overlay: Displays attention score, current status, head yaw, head pitch, and face detection state
 - MediaPipe Face Tracking: Uses Face Mesh landmarks to estimate face presence and head movement
@@ -42,7 +42,7 @@ Core dependencies:
 
 ```text
 opencv-python==4.11.0.86
-mediapipe==0.10.21
+mediapipe>=0.10.30,<0.11
 numpy>=1.26.4,<2
 PySide6>=6.7.0
 ```
@@ -61,20 +61,21 @@ cd cooked.exe
 Create and activate a virtual environment:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
 On Windows:
 
 ```bash
+python -m venv .venv
 .venv\Scripts\activate
 ```
 
 Install required packages:
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ## Usage
@@ -82,14 +83,14 @@ pip install -r requirements.txt
 Run the desktop app:
 
 ```bash
-python app.py
+python3 app.py
 ```
 
 The app will open a native desktop window. The webcam feed fills the window, and live metrics appear in the top corner.
 
 ## App Flow
 
-1. Start the app with `python app.py`.
+1. Start the app with `python3 app.py`.
 2. Grant camera permission if your operating system asks for it.
 3. Stay focused and visible to the webcam.
 4. If your attention score drops into the distracted state, the employment form slides in from the left.
@@ -148,6 +149,4 @@ cooked.exe/
 - Face Not Detected: Improve lighting and keep your face in frame.
 - Audio Does Not Play: Check system output volume and confirm the MP3 exists at `assets/sounds/mcdonalds-beeping-sound.mp3`.
 - PDF Does Not Show: Confirm the employment form exists at `assets/images/employment-form.pdf`.
-- App Does Not Launch: Reinstall dependencies with `pip install -r requirements.txt`.
-
-
+- App Does Not Launch: Reinstall dependencies with `python3 -m pip install -r requirements.txt`.
