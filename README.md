@@ -1,6 +1,6 @@
-# cooked.exe
+# cooked.exe 🔥 🍚
 
-Local native desktop distraction detector. The app opens a PySide6/Qt window, fills it with the live webcam feed, estimates attention locally with MediaPipe facial landmarks and OpenCV heuristics, and slides in an employment form when the user becomes distracted.
+A face-detection program that ensure CS students stop doomscrolling by reminding them of their worst nightmare: unemployment. 
 
 ## Features
 
