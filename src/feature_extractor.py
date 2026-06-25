@@ -32,7 +32,7 @@ class FeatureExtractor:
             return FaceFeatures(face_detected=False)
 
         if not self._has_required_landmarks(tracking.landmarks):
-            return FaceFeatures(face_detected=False)
+            return FaceFeatures(face_detected=True)
 
         head_pitch, head_yaw = self._estimate_head_pose(
             tracking.landmarks,

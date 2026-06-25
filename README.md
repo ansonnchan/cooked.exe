@@ -34,7 +34,7 @@ Everything runs locally on your machine. There is no cloud service, database, br
 
 - Python 3.8+
 - Webcam access
-- macOS, Windows, or Linux desktop environment capable of running Qt
+- macOS, Windows, or Linux desktop environment
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ Core dependencies:
 opencv-python==4.11.0.86
 mediapipe>=0.10.30,<0.11
 numpy>=1.26.4,<2
-PySide6>=6.7.0
+PyMuPDF>=1.24.0
 ```
 
 These are installed from `requirements.txt`.
@@ -76,6 +76,12 @@ Install required packages:
 
 ```bash
 python3 -m pip install -r requirements.txt
+```
+
+If pip warns that `/Users/.../Library/Caches/pip` is not writable, use a local cache for this project:
+
+```bash
+PIP_CACHE_DIR=.cache/pip python3 -m pip install -r requirements.txt
 ```
 
 ## Usage
