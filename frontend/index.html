@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cooked.exe</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>cooked.exe</h1>
+          <p id="connectionLabel">Connecting</p>
+        </div>
+        <div class="status-row">
+          <span id="connectionDot" class="dot pending"></span>
+          <span id="stateBadge" class="state-badge">Starting</span>
+        </div>
+      </header>
+
+      <section class="dashboard-grid" aria-label="Attention dashboard">
+        <div class="preview-panel">
+          <img id="webcamPreview" src="/video_feed" alt="Live webcam preview">
+          <div id="cameraError" class="camera-error" hidden></div>
+        </div>
+
+        <aside class="metrics-panel">
+          <section class="score-block">
+            <div id="scoreMeter" class="score-meter" style="--score: 100">
+              <span id="attentionScore">100</span>
+            </div>
+            <div>
+              <h2>Attention Score</h2>
+              <p id="reasonLine">Calibrating</p>
+            </div>
+          </section>
+
+          <section class="timer-block">
+            <span>Distraction Timer</span>
+            <strong id="distractionTimer">0.0s</strong>
+          </section>
+
+          <section class="signal-grid">
+            <div>
+              <span>Yaw</span>
+              <strong id="yawValue">0.0</strong>
+            </div>
+            <div>
+              <span>Pitch</span>
+              <strong id="pitchValue">0.0</strong>
+            </div>
+            <div>
+              <span>Mouth</span>
+              <strong id="mouthValue">Closed</strong>
+            </div>
+            <div>
+              <span>Face</span>
+              <strong id="faceValue">No</strong>
+            </div>
+          </section>
+
+          <section class="settings-panel">
+            <div class="setting-row">
+              <label for="thresholdSlider">Threshold</label>
+              <output id="thresholdOutput">50</output>
+            </div>
+            <input id="thresholdSlider" type="range" min="1" max="99" value="50">
+
+            <div class="setting-row">
+              <label for="delaySlider">Intervention Delay</label>
+              <output id="delayOutput">5s</output>
+            </div>
+            <input id="delaySlider" type="range" min="1" max="30" step="0.5" value="5">
+
+            <label class="toggle-row" for="soundToggle">
+              <span>Sound</span>
+              <input id="soundToggle" type="checkbox" checked>
+            </label>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <div id="interventionOverlay" class="intervention-overlay" hidden>
+      <div class="intervention-dialog" role="dialog" aria-modal="true" aria-labelledby="interventionTitle">
+        <p class="warning-label">Performance Warning</p>
+        <h2 id="interventionTitle">Employment Interest Form</h2>
+        <p id="interventionBody">We noticed signs of decreased productivity.</p>
+        <form class="fake-form">
+          <label>
+            Full Legal Name
+            <input type="text" value="Definitely Focused Employee">
+          </label>
+          <label>
+            Reason For Application
+            <select>
+              <option>Accidental doomscrolling</option>
+              <option>Thought the tabs would organize themselves</option>
+              <option>Looked away for dramatic effect</option>
+            </select>
+          </label>
+          <button id="dismissIntervention" type="button">Apply Now</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/static/overlay.js"></script>
+    <script src="/static/script.js"></script>
+  </body>
+</html>
