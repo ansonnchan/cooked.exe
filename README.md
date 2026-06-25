@@ -1,31 +1,33 @@
 # cooked.exe
 
-Real-time local computer vision distraction detector. The app watches a webcam feed locally, estimates attention with MediaPipe facial landmarks and OpenCV heuristics, and triggers unserious workplace interventions when distraction persists.
+Local native desktop distraction detector. The app opens a PySide6/Qt window, fills it with the live webcam feed, estimates attention locally with MediaPipe facial landmarks and OpenCV heuristics, and slides in an employment form when the user becomes distracted.
 
 ## Features
 
-- FastAPI backend with WebSocket telemetry
-- OpenCV webcam capture and MJPEG preview
+- Native desktop window launched with `python app.py`
+- Full-window webcam feed with live attention metrics overlay
+- OpenCV webcam capture on a background thread
 - MediaPipe Face Mesh landmark tracking
 - Heuristic head yaw, head pitch, face visibility, and mouth openness signals
 - EMA-smoothed attention score
-- Finite state machine for sustained distraction detection
-- Browser dashboard with threshold, delay, and sound controls
-- Local-only operation with no database, accounts, cloud APIs, or image upload
+- Immediate distracted-state intervention
+- Sliding left-side PDF employment form overlay
+- Looping local McDonald's sound while distracted
+- Local-only operation with no browser UI, server, database, cloud APIs, or image upload
 
 ## Quickstart
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 python app.py
 ```
 
-Then open:
+On Windows, activate the virtual environment with:
 
-```text
-http://127.0.0.1:8000
+```bash
+.venv\Scripts\activate
 ```
 
 ## Project Structure
@@ -36,25 +38,22 @@ cooked.exe/
   config.py
   requirements.txt
   backend/
-    app.py
+    audio.py
     camera.py
+    desktop_ui.py
     mediapipe_tracker.py
     feature_extractor.py
     attention_engine.py
     state_machine.py
     intervention.py
-    websocket_manager.py
     config.py
-  frontend/
-    index.html
-    styles.css
-    script.js
-    overlay.js
   assets/
     images/
+      employment-form.pdf
     sounds/
+      mcdonalds-beeping-sound.mp3
 ```
 
 ## Configuration
 
-Runtime defaults live in `config.py`. The dashboard can update intervention delay, sound, and attention threshold while the app is running.
+Runtime defaults live in `config.py`.
