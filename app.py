@@ -1,22 +1,9 @@
 from __future__ import annotations
 
-import threading
-import webbrowser
+import sys
 
-import uvicorn
-
-from config import settings
-
-
-def open_browser() -> None:
-    webbrowser.open(f"http://{settings.host}:{settings.port}")
+from backend.desktop_ui import run_desktop_app
 
 
 if __name__ == "__main__":
-    threading.Timer(1.0, open_browser).start()
-    uvicorn.run(
-        "backend.app:app",
-        host=settings.host,
-        port=settings.port,
-        reload=False,
-    )
+    sys.exit(run_desktop_app())
