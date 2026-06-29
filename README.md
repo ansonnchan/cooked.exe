@@ -1,4 +1,4 @@
-# cooked.exe 🍚
+# cooked 🍚
 
 A desktop attention detector that uses your webcam to notice when you stop paying attention.
 
@@ -54,8 +54,8 @@ These are installed from `requirements.txt`.
 Clone the repository:
 
 ```bash
-git clone https://github.com/ansonnchan/cooked.exe
-cd cooked.exe
+git clone https://github.com/ansonnchan/cooked
+cd cooked
 ```
 
 Create and activate a virtual environment:
@@ -137,7 +137,7 @@ mirror_preview                Mirrors the camera preview
 ## Project Structure
 
 ```text
-cooked.exe/
+cooked/
   app.py
   config.py
   requirements.txt
